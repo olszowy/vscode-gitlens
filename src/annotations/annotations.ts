@@ -42,7 +42,7 @@ export class Annotations {
     }
 
     private static getHoverCommandBar(commit: GitCommit, hasRemote: boolean, annotationType?: FileAnnotationType, line: number = 0) {
-        let commandBar = `[\`${GlyphChars.DoubleArrowLeft}\`](${DiffWithCommand.getMarkdownCommandArgs(commit)} "Open Changes") `;
+        let commandBar = `[\`${GlyphChars.MuchGreaterThan}\`](${DiffWithCommand.getMarkdownCommandArgs(commit)} "Open Changes") `;
 
         if (commit.previousSha !== undefined) {
             if (annotationType === FileAnnotationType.RecentChanges) {
@@ -92,7 +92,7 @@ export class Annotations {
             message = `\n\n> ${message}`;
         }
         else {
-            showCommitDetailsCommand = `\`${commit.shortSha || '00000000'}\``;
+            showCommitDetailsCommand = `\`${commit.shortSha === 'working' ? '00000000' : commit.shortSha}\``;
         }
 
         const markdown = new MarkdownString(`${showCommitDetailsCommand} &nbsp; ![](${commit.getGravatarUri(Container.config.defaultGravatarsStyle).toString()}) &nbsp;__${commit.author}__, ${commit.fromNow()} &nbsp; _(${commit.formatDate(dateFormat)})_ ${message}${commandBar}`);
@@ -111,7 +111,7 @@ export class Annotations {
                 message = `[\`Changes\`](${DiffWithCommand.getMarkdownCommandArgs(commit)} "Open Changes") &nbsp; ${GlyphChars.Dash} &nbsp; [\`${commit.previousShortSha}\`](${ShowQuickCommitDetailsCommand.getMarkdownCommandArgs(commit.previousSha!)} "Show Commit Details") ${GlyphChars.ArrowLeftRight} _${uri.shortSha}_\n${codeDiff}`;
             }
             else {
-                message = `[\`Changes\`](${DiffWithCommand.getMarkdownCommandArgs(commit)} "Open Changes") &nbsp; ${GlyphChars.Dash} &nbsp; _uncommitted_\n${codeDiff}`;
+                message = `[\`Changes\`](${DiffWithCommand.getMarkdownCommandArgs(commit)} "Open Changes") &nbsp; ${GlyphChars.Dash} &nbsp; _uncommitted changes_\n${codeDiff}`;
             }
         }
         else {
